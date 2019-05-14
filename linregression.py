@@ -25,9 +25,6 @@ def gradientDescent():
     vTheta = np.zeros((2,1))
     return vTheta
 
-def test():
-    print('Hello World')
-
 def loadData(sCSVFilename):
     #load data and plot if 2D
     aData = np.loadtxt(sCSVFilename, delimiter=',')
