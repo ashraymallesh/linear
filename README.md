@@ -1,4 +1,4 @@
-# linear-regression
+# Linear Regression in Python
 implementing a linear regression model from scratch in python (without using scikit-learn)
 
 sv-linreg.py is the single variable version<br>
