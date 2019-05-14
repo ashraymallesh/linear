@@ -1,7 +1,7 @@
 # linear-regression
 implementing a linear regression model from scratch in python (without using scikit-learn)
 
-sv-linreg.py is the single variable version
+sv-linreg.py is the single variable version<br>
 mv-linreg.py is the multivariable version (for multiple features)
 
 # Requirements
