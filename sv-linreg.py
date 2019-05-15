@@ -25,8 +25,8 @@ def loadData(sCSVFilename):
     return aX, v_y
 
 def computeCost(aX, v_y, vTheta):
-    error = (aX @ vTheta) - v_y # h(x(i)) - y(i)
-    sum = np.sum(error**2)
+    vError = (aX @ vTheta) - v_y # @ is matrix multiplication in py3.5+
+    sum = np.sum(VError ** 2) # we are multiplying a mxn matrix by a nx1 matrix (result is mx1)
     fCost = sum / (2*i_m)
     return fCost
 
