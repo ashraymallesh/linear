@@ -17,6 +17,7 @@ def loadData(sCSVFilename):
     ones = np.ones((i_m, 1)) # m-dim vector filled with 1s
     aX = np.concatenate((ones, v_x), 1) # design matrix X with each row as x_i^T
     i_n = aX.shape[1] # (num features)
+    theta = np.ones((1,2)) #returns a 1x2 row vector [1 1]
 
     plt.scatter(v_x, v_y) # scatterplot using first,second cols of aData as x,y
     plt.show()
@@ -24,16 +25,10 @@ def loadData(sCSVFilename):
     return aX, v_y
 
 def computeCost(aX, v_y, vTheta):
-    # calculate cost for a given theta vector
-    sum = 0 # summation term in cost function
-    for i in range(1,i_m): 
-        sum += (h(vTheta, aX[i,:].reshape(-1,1)) - v_y[i])**2
-    fCost = (1/(2*i_m))*sum
+    error = (aX @ vTheta) - v_y # h(x(i)) - y(i)
+    sum = np.sum(error**2)
+    fCost = sum / (2*i_m)
     return fCost
-
-def h(vTheta, v_x):
-    # hypothesis function on a vector x
-    return np.dot(vTheta,v_x)
 
 def gradientDescent():
     vTheta = np.zeros((2,1))
