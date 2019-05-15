@@ -10,7 +10,7 @@ i_m = 0 # number of training examples
 
 def loadData(sCSVFilename):
     global i_m, i_n
-    aData = np.loadtxt(sCSVFilename, delimiter=',')
+    aData = np.genfromtxt(sCSVFilename, delimiter=',')
     v_x = aData[:,0].reshape(-1,1) #reshape(-1,1) is basically hor->ver transpose for a 1D ndarray
     v_y = aData[:,-1].reshape(-1,1) # vector y with each row as y_i
     i_m = v_y.size # (num training examples)
@@ -25,9 +25,9 @@ def loadData(sCSVFilename):
     return aX, v_y
 
 def computeCost(aX, v_y, vTheta):
-    vError = (aX @ vTheta) - v_y # @ is matrix multiplication in py3.5+
-    sum = np.sum(VError ** 2) # we are multiplying a mxn matrix by a nx1 matrix (result is mx1)
-    fCost = sum / (2*i_m)
+    vError = (aX.dot(vTheta.T)) - v_y # @ is matrix multiplication in py3.5+, mxn @ nx1 --> mx1
+    sum = np.sum(vError ** 2) #squaring each error term and summing m elements
+    fCost = sum / (2 * i_m)
     return fCost
 
 def gradientDescent():
@@ -35,3 +35,5 @@ def gradientDescent():
     return vTheta
 
 aX, v_y = loadData('ex1data1.txt')
+cost = computeCost(aX,v_y, np.zeros((1,2)))
+print(cost)
