@@ -1,35 +1,29 @@
-# single variable linear regression in python
-# variable prefixes: v = vector, a = array, s = string, i = int, f = float (vectors and arrays are numpy ndarrays)
-
-import numpy as np 
+import numpy as np
 import matplotlib.pyplot as plt
 
-# some global variables
-i_n = 0 # number of features
-i_m = 0 # number of training examples
+aData = np.genfromtxt('dataset.csv', delimiter=',')
+x = aData[1:,0].reshape(-1,1)
+y = aData[1:,-1].reshape(-1,1)
+m = x.size # number of training examples
+n = 2 # number of features
+ones = np.ones((m, 1)) # m-dim vector filled with 1s
+X = np.concatenate((ones, x), 1) # create design matrix X by adding ones as left col (x_0 = 1)
+theta = np.zeros((n,1)) # theta vector with 2 zeroes
 
-def loadData(sCSVFilename):
-    global i_m, i_n
-    aData = np.genfromtxt(sCSVFilename, delimiter=',')
-    v_x = aData[:,0].reshape(-1,1) #reshape(-1,1) is basically hor->ver transpose for a 1D ndarray
-    v_y = aData[:,-1].reshape(-1,1) # vector y with each row as y_i
-    i_m = v_y.size # (num training examples)
-    ones = np.ones((i_m, 1)) # m-dim vector filled with 1s
-    aX = np.concatenate((ones, v_x), 1) # design matrix X with each row as x_i^T
-    i_n = aX.shape[1] # (num features)
+#compute cost using vectorized numpy computation instead of using for-loops
+error = (X @ theta) - y # mxn @ nx1 -> mx1 (matrix multiplication)
+cost = np.sum(error**2)/(2*m)
 
-    plt.scatter(v_x, v_y) # scatterplot using first,second cols of aData as x,y
-    plt.show()
+def gradientDescent(X, y, theta, alpha, iters):
+    for i in range(iters):
+        error = (X @ theta) - y # mxn @ nx1 -> mx1 (matrix multiplication)/
+        theta = theta - ((alpha/m) * np.sum(error * X, axis=0))
+    return theta[0]
 
-    return aX, v_y
+print('Initial cost with theta = [0;0] is {0}'.format(cost))
 
-def computeCost(aX, v_y, vTheta):
-    vError = (aX @ vTheta) - v_y # @ is matrix multiplication in py3.5+, mxn @ nx1 --> mx1
-    sum = np.sum(vError ** 2) #squaring each error term and summing m elements
-    fCost = sum / (2 * i_m)
-    return fCost
-
-aX, v_y = loadData('dataset.csv')
-vTheta = np.zeros((i_n,1)) #returns a 2x1 col vector of 1s like [1;1]
-cost = computeCost(aX, v_y, vTheta)
-print(cost)
+theta = gradientDescent(X, y, theta, 0.001, 1000)
+plt.scatter(x,y) #original points scatterplot
+y_pred = (theta[0]*x + theta[1])
+plt.plot(x, y_pred, 'r') #plot regression line
+plt.show()
