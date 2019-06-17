@@ -7,27 +7,29 @@ x = aData[:,0].reshape(-1,1)
 y = aData[:,-1].reshape(-1,1)
 X = np.c_[np.ones((m,1)), aData[:,0]] # create design matrix X by adding ones as left col (x_0 = 1)
 
-def hyp(x, theta):
-	if x.shape == theta.shape: return np.dot(x,theta)
-	else: return x @ theta # mxn @ nx1 -> mx1 (matrix multiplication)
+def hyp(X, theta):
+	if X.shape == theta.shape:
+		return np.dot(X,theta)
+	else:
+		return X @ theta # mxn @ nx1 --> mx1
 
-def cost(theta, x, y):
-	#compute cost using vectorized numpy computation instead of using for-loops
-	error = hyp(x, theta) - y 
-	return np.sum(error**2) / 2*m
+def cost(theta, X, y):
+	#compute cost using vectorized numpy computation instead of for loops
+	error = hyp(X, theta) - y 
+	return np.sum(np.power(error, 2)) / (2*m)
 
-def gradientDescent(x, y, theta, alpha, iters):
-    for i in range(iters):
-        error = hyp(x, theta) - y
-        theta = theta - ((alpha/m) * np.sum(error * x, axis=0))
-    return theta[0]
+def gradientDescent(X, y, theta, alpha, iters):
+    for _ in range(iters):
+        error = hyp(X, theta) - y
+        theta = theta - ((alpha/m) * np.dot(X.T, error))
+    return theta
 
-def plot():
-	global x,y,theta
-	plt.scatter(x,y) #original points scatterplot
-	y_pred = (theta[0]*x + theta[1])
-	plt.plot(x, y_pred, 'r') #plot regression line
+def plot(theta, X, y):
+	plt.scatter(X[:,1],y) #original points scatterplot
+	plt.plot(X[:,1], (X @ theta), 'r') #plot regression line
 	plt.show()
 
 theta = np.zeros((n,1)) # theta vector with 2 zeroes
-theta = gradientDescent(X, y, theta, 0.001, 1000)
+alpha = 0.01; iters = 1500
+theta = gradientDescent(X, y, theta, alpha, iters)
+plot(theta, X, y)
