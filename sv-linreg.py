@@ -26,7 +26,7 @@ def gradientDescent(X, y, theta, alpha, iters):
 
 def plot(theta, X, y):
 	plt.scatter(X[:,1],y) #original points scatterplot
-	plt.plot(X[:,1], (X @ theta), 'r') #plot regression line
+	plt.plot(X[:,1], hyp(X, theta), 'r') #plot regression line
 	plt.show()
 
 theta = np.zeros((n,1)) # theta vector with 2 zeroes
