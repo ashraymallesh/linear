@@ -1,5 +1,5 @@
 # Linear Regression in Python
-Just trying to implement a linear regression model from scratch in python (without using scikit-learn) after watching Andrew Ng's ML lecture videos for weeks 1-2
+Just trying to implement a linear regression model from scratch in python (without using scikit-learn)
 
 sv-linreg.py is the single variable version<br>
 mv-linreg.py is the multivariable version (for multiple features)
